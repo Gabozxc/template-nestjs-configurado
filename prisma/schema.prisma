@@ -1,0 +1,121 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type MoviesAwards {
+  nominations Int
+  text        String
+  wins        Int
+}
+
+type MoviesImdb {
+  id     Int
+  rating Float
+  votes  Int
+}
+
+type MoviesTomatoes {
+  boxOffice   String?
+  consensus   String?
+  critic      MoviesTomatoesCritic?
+  dvd         DateTime?             @db.Date
+  fresh       Int?
+  lastUpdated DateTime              @db.Date
+  production  String?
+  rotten      Int?
+  viewer      MoviesTomatoesViewer?
+  website     String?
+}
+
+type MoviesTomatoesCritic {
+  meter      Int?
+  numReviews Int
+  rating     Float?
+}
+
+type MoviesTomatoesViewer {
+  meter      Int?
+  numReviews Int
+  rating     Float?
+}
+
+type TheatersLocation {
+  address TheatersLocationAddress
+  geo     TheatersLocationGeo
+}
+
+type TheatersLocationAddress {
+  city    String
+  state   String
+  street1 String
+  street2 String?
+  zipcode String
+}
+
+type TheatersLocationGeo {
+  coordinates Float[]
+  type        String
+}
+
+model comments {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  date     DateTime @db.Date
+  email    String
+  movie_id String   @db.ObjectId
+  name     String
+  text     String
+}
+
+model movies {
+  id                 String          @id @default(auto()) @map("_id") @db.ObjectId
+  awards             MoviesAwards
+  cast               String[]
+  countries          String[]
+  directors          String[]
+  fullplot           String?
+  genres             String[]
+  imdb               MoviesImdb
+  languages          String[]
+  lastupdated        String
+  metacritic         Int?
+  num_mflix_comments Int
+  plot               String?
+  poster             String?
+  rated              String?
+  released           DateTime?       @db.Date
+  runtime            Int?
+  title              String
+  tomatoes           MoviesTomatoes?
+  type               String
+  writers            String[]
+  year               Int
+}
+
+model sessions {
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  jwt     String
+  user_id String? @unique(map: "user_id_1")
+}
+
+model theaters {
+  id        String           @id @default(auto()) @map("_id") @db.ObjectId
+  location  TheatersLocation
+  theaterId Int
+
+  @@index([location.geo], map: "geo index")
+}
+
+model users {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  email          String   @unique(map: "email_1")
+  hashedPassword String?
+  isAdmin        Boolean?
+  name           String
+  password       String?
+  preferences    String[]
+}
