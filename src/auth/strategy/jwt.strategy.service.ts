@@ -12,6 +12,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     });
   }
   validate(payload: any) {
+    // valide return value in @Req() req: Request
     return payload;
   }
 }
