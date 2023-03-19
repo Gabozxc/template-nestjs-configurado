@@ -30,13 +30,13 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 
-## ENV variables:
+# ENV variables:
 
-# DATABASE_URL=""
-# JWT_SECRET=""
+## DATABASE_URL=""
+## JWT_SECRET=""
  
-## Commands to update Mongodb:
+# Commands to update Mongodb:
 
-# npx prisma db pull
+## npx prisma db pull
 
-# npx prisma generate
+## npx prisma generate
